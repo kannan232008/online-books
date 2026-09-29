@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#4263eb">
+<meta name="description" content="LibraX International College Digital Library">
+<title>LibraX — IDigital Library</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+:root{
+ --bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#6b768c;--border:#e1e6f0;
+ --p:#4263eb;--p2:#7048e8;--pink:#e64980;--ok:#20c997;--danger:#fa5252;
+ --shadow:0 15px 45px rgba(35,48,80,.12);--radius:18px
+}
+body.dark{--bg:#070b15;--card:#111827;--text:#f5f7ff;--muted:#9ca9c0;--border:#27334c;--shadow:0 20px 60px rgba(0,0,0,.45)}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);min-height:100vh;transition:.25s}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.nav{height:72px;position:sticky;top:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0 4%;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.logo{font-size:25px;font-weight:950;color:var(--p)}.logo span{color:var(--text)}
+.navlinks{display:flex;align-items:center;gap:18px}.navlinks a{font-size:14px;color:var(--text)}
+.navright{display:flex;gap:8px;align-items:center}.icon{width:40px;height:40px;border:1px solid var(--border);border-radius:50%;background:var(--card);color:var(--text)}
+.menu{display:none}
+.btn{border:0;border-radius:11px;padding:11px 16px;background:var(--p);color:#fff;font-weight:800}
+.btn.alt{background:var(--p2)}.btn.ok{background:var(--ok)}.btn.danger{background:var(--danger)}.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.hero{position:relative;overflow:hidden;min-height:550px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:70px 5%;background:radial-gradient(circle at 10% 20%,rgba(66,99,235,.13),transparent 28%),radial-gradient(circle at 90% 10%,rgba(112,72,232,.13),transparent 25%),radial-gradient(circle at 50% 100%,rgba(230,73,128,.09),transparent 35%)}
+.hero h1{font-size:clamp(42px,7vw,76px);line-height:1.03;max-width:1000px}.grad{background:linear-gradient(90deg,#4263eb,#7048e8,#e64980);background-clip:text;-webkit-background-clip:text;color:transparent}
+.hero p{max-width:760px;color:var(--muted);line-height:1.8;margin:20px 0 28px}
+.search{width:min(900px,100%);display:flex;gap:8px;padding:7px 8px 7px 18px;background:var(--card);border:1px solid var(--border);border-radius:45px;box-shadow:var(--shadow)}
+.search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text);padding:13px;font-size:16px}.search button{border:0;border-radius:35px;padding:13px 22px;background:var(--p);color:white}
+.quick{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:18px}.quick button{border:1px solid var(--border);background:var(--card);color:var(--muted);padding:8px 13px;border-radius:20px}
+.section{padding:55px 5%}.head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}.head h2{font-size:28px}.muted{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}.stat,.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.stat{padding:22px}.stat strong{display:block;font-size:30px;color:var(--p)}.stat span{color:var(--muted);font-size:13px}
+.depts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}.dept{padding:20px;text-align:center;cursor:pointer;transition:.2s}.dept:hover{transform:translateY(-5px);border-color:var(--p)}.dept .emoji{font-size:32px}.dept b{display:block;margin-top:8px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px}.filter{padding:10px 15px;border-radius:22px;background:var(--card);border:1px solid var(--border);color:var(--text)}.filter.active,.filter:hover{background:var(--p);color:#fff}
+.advanced{display:none;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}.advanced.show{display:grid}.advanced select,.advanced input{padding:11px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:20px}.book{overflow:hidden;transition:.22s}.book:hover{transform:translateY(-6px)}
+.cover{height:260px;padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fff;background:linear-gradient(135deg,#4263eb,#7048e8);position:relative}.cover .emoji{font-size:44px;margin-bottom:13px}.cover small{opacity:.8;margin-top:8px}.level{position:absolute;top:12px;left:12px;padding:5px 8px;border-radius:8px;background:rgba(0,0,0,.25);font-size:10px}.save{position:absolute;top:10px;right:10px;border:0;border-radius:50%;width:38px;height:38px;background:rgba(255,255,255,.18);color:#fff;font-size:18px}
+.body{padding:16px}.body h3{font-size:16px;margin-bottom:6px}.body p{font-size:13px;line-height:1.6;color:var(--muted)}.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.tag{font-size:10px;padding:5px 7px;border-radius:9px;background:rgba(66,99,235,.1);color:var(--p)}.actions{display:flex;gap:7px}.actions button{flex:1;padding:10px;border:0;border-radius:9px;background:var(--p);color:#fff}.actions .ghost{flex:0 0 44px}
+.progress{height:5px;background:var(--border);border-radius:5px;overflow:hidden;margin:10px 0}.progress i{display:block;height:100%;background:var(--ok)}
+.empty{grid-column:1/-1;text-align:center;padding:70px}
+footer{text-align:center;padding:45px 5%;border-top:1px solid var(--border);color:var(--muted)}
+.modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.68);display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.box{width:min(720px,100%);max-height:92vh;overflow:auto;background:var(--card);border-radius:22px;padding:28px;position:relative;box-shadow:0 25px 90px rgba(0,0,0,.4)}.close{position:absolute;right:16px;top:10px;border:0;background:transparent;color:var(--text);font-size:28px}
+.form{margin:14px 0}.form label{display:block;font-size:12px;margin-bottom:6px}.form input,.form select,.form textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text)}.form textarea{min-height:110px}.full{width:100%}
+.reader{line-height:1.9;padding:22px;background:var(--bg);border:1px solid var(--border);border-radius:15px;margin-top:18px}.reader p{white-space:pre-line}.reader-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.ai{position:fixed;right:20px;bottom:80px;z-index:600;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(135deg,#4263eb,#7048e8);color:#fff;font-size:23px;box-shadow:var(--shadow)}.aip{display:none;position:fixed;right:20px;bottom:150px;z-index:601;width:min(380px,92%);background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}.aip.show{display:block}.aihead{padding:15px;background:linear-gradient(135deg,#4263eb,#7048e8);color:#fff}.aibody{padding:15px}.airow{display:flex;gap:7px;margin-top:12px}.airow input{flex:1;padding:10px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text)}
+.toast{position:fixed;right:20px;bottom:20px;z-index:2000;background:var(--card);border:1px solid var(--border);padding:14px 18px;border-radius:12px;box-shadow:var(--shadow);transform:translateY(130px);transition:.25s}.toast.show{transform:translateY(0)}
+.dashboard{position:fixed;inset:0;z-index:900;background:var(--bg);display:none;overflow:auto}.dashboard.show{display:block}.dashnav{height:70px;background:var(--card);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;padding:0 4%}.dashbody{padding:30px 5%}.dashgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin:22px 0}.dashcard{padding:20px}.dashcard strong{display:block;color:var(--p);font-size:28px}
+table{width:100%;border-collapse:collapse}th,td{padding:11px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}
+.notif{position:fixed;top:82px;right:20px;z-index:700;width:min(340px,90%);display:none}.notif.show{display:block}.notif .card{padding:15px}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.navlinks{display:none;position:absolute;top:72px;left:0;right:0;flex-direction:column;padding:22px;background:var(--card);border-bottom:1px solid var(--border)}.navlinks.show{display:flex}.menu{display:block}.advanced{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.section{padding:40px 4%}.hero{min-height:480px;padding:50px 4%}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.cover{height:205px}.body{padding:11px}.body h3{font-size:14px}.actions button{font-size:11px;padding:9px 5px}.advanced.show{grid-template-columns:1fr}.search button{padding:12px 15px}}
+
+/* ===== LibraX V3 UPGRADE ===== */
+:root{
+ --gold:#f59f00;--cyan:#15aabf;--purple:#845ef7;--glass:rgba(255,255,255,.08);
+}
+body.dark .nav,body.dark .search,body.dark .stat,body.dark .card{backdrop-filter:blur(14px)}
+.nav{box-shadow:0 4px 25px rgba(0,0,0,.04)}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;filter:blur(2px);pointer-events:none}
+.hero:before{width:280px;height:280px;left:-90px;top:80px;background:rgba(21,170,191,.10);animation:floatx 8s ease-in-out infinite}
+.hero:after{width:220px;height:220px;right:-70px;bottom:60px;background:rgba(245,159,0,.10);animation:floatx 10s ease-in-out infinite reverse}
+.hero>*{position:relative;z-index:1}
+@keyframes floatx{50%{transform:translate(30px,-25px) scale(1.08)}}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{padding:6px 10px;border-radius:99px;border:1px solid var(--border);background:var(--bg);font-size:11px;color:var(--muted)}
+.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.feature{padding:20px}
+.feature .fi{font-size:30px;margin-bottom:10px}
+.feature h3{margin-bottom:6px}
+.feature p{font-size:13px;line-height:1.65;color:var(--muted)}
+.goalbar{height:9px;background:var(--border);border-radius:99px;overflow:hidden;margin:10px 0}
+.goalbar i{display:block;height:100%;background:linear-gradient(90deg,var(--p),var(--cyan));border-radius:99px}
+.reader-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.reader-controls{display:flex;gap:7px;flex-wrap:wrap}
+.reader-font{font-size:14px;padding:8px 11px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text)}
+.bookmark{color:var(--gold)!important}
+.rating{display:flex;gap:3px;margin:8px 0}
+.rating button{border:0;background:transparent;font-size:19px;padding:0;color:#adb5bd}
+.rating button.on{color:var(--gold)}
+.stat small{display:block;color:var(--muted);margin-top:5px}
+.search-meta{font-size:12px;color:var(--muted);margin-top:9px}
+.kbd{font-family:monospace;padding:2px 6px;border:1px solid var(--border);border-radius:5px;background:var(--bg)}
+.pagination{display:flex;justify-content:center;gap:8px;margin-top:25px;flex-wrap:wrap}
+.pagination button{min-width:42px}
+.progress-ring{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--p) var(--ring,0%),var(--border) 0)}
+.progress-ring span{width:64px;height:64px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-weight:900}
+.compare-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.admin-tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.badge-live{display:inline-flex;align-items:center;gap:6px;color:var(--ok);font-size:12px}
+.badge-live i{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;box-shadow:0 0 10px var(--ok)}
+@media(max-width:900px){.feature-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.feature-grid{grid-template-columns:1fr}.compare-list{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo">Libra<span>X</span></div>
+  <div class="navlinks" id="navLinks">
+    <a onclick="go('home')">Home</a><a onclick="go('books')">Books</a><a onclick="go('departments')">Departments</a><a onclick="go('features')">Features</a>
+    <a onclick="showSaved()">My Library</a><a onclick="showHistory()">History</a><a onclick="openProfile()">Profile</a>
+    <button class="btn" id="authBtn" onclick="openLogin()">Login</button>
+  </div>
+  <div class="navright"><button class="icon" title="Study dashboard" onclick="openStudentDashboard()">🎓</button><button class="icon" title="Notifications" onclick="toggleNotifications()">🔔</button><button class="icon" onclick="toggleTheme()">🌙</button><button class="icon menu" onclick="toggleMenu()">☰</button></div>
+</nav>
+
+<div class="notif" id="notif"><div class="card"><b>🔔 LibraX Notifications</b><p class="muted" style="margin-top:8px">Welcome to the international library dashboard.</p><p class="muted" style="margin-top:6px">Keyboard: <b>/</b> search · <b>D</b> theme · <b>Esc</b> close</p></div></div>
+
+<section class="hero" id="home">
+  <h1>Global Learning. <span class="grad">One Library.</span></h1>
+  <p>LibraX is an advanced college digital-library platform with smart discovery, multilingual interface, reading progress, personal collections, analytics, admin tools and an architecture ready for cloud storage and institutional APIs.</p>
+  <div class="search"><span>🔎</span><input id="searchInput" placeholder="Search title, author, subject, ISBN, department..." oninput="searchBooks()"><button onclick="searchBooks()">Search</button></div>
+  <div class="quick">
+    <button onclick="selectDepartment('Computer Science')">💻 CSE</button><button onclick="selectDepartment('Artificial Intelligence')">🤖 AI</button>
+    <button onclick="selectDepartment('Data Science')">📊 Data Science</button><button onclick="selectDepartment('Mechanical Engineering')">⚙️ Mechanical</button>
+    <button onclick="selectDepartment('Commerce')">💼 Commerce</button><button onclick="selectCategory('Mathematics')">∑ Mathematics</button>
+  </div><div style="margin-top:18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn alt" onclick="installApp()">📱 Enable App Mode</button><button class="btn ghost" onclick="showBookmarks()">🔖 My Bookmarks</button></div>
+</section>
+
+<section class="section">
+  <div class="head"><h2>🌍 International Library Overview</h2><span class="muted" id="liveStatus">Local demo mode</span></div>
+  <div class="stats">
+    <div class="stat"><strong id="totalBooks">0</strong><span>Digital Resources</span></div>
+    <div class="stat"><strong id="totalSaved">0</strong><span>Saved Resources</span></div>
+    <div class="stat"><strong id="totalRead">0</strong><span>Reading Sessions</span></div>
+    <div class="stat"><strong>18+</strong><span>Departments</span></div>
+    <div class="stat"><strong>24/7</strong><span>Global Access</span></div>
+  </div>
+</section>
+
+<section class="section" id="departments">
+  <div class="head"><h2>🎓 Departments</h2><button class="btn ghost" onclick="resetFilters()">Clear</button></div>
+  <div class="depts" id="departmentGrid"></div>
+</section>
+
+<section class="section" id="books">
+  <div class="head"><div><h2>📚 Smart Book Discovery</h2><span class="muted" id="resultCount"></span></div><div style="display:flex;gap:8px"><button class="btn ghost" onclick="toggleAdvanced()">⚙️ Advanced</button><button class="btn" onclick="resetFilters()">Reset</button></div></div>
+  <div class="toolbar" id="categoryFilters"></div>
+  <div class="advanced" id="advanced">
+    <select id="levelFilter" onchange="searchBooks()"><option value="All">All Levels</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+    <select id="languageFilter" onchange="searchBooks()"><option value="All">All Languages</option><option>English</option><option>Hindi</option><option>Tamil</option><option>Malayalam</option></select>
+    <select id="sortFilter" onchange="searchBooks()"><option value="relevance">Sort: Relevance</option><option value="az">Title A–Z</option><option value="za">Title Z–A</option><option value="new">Newest</option><option value="popular">Popular</option></select>
+    <select id="availabilityFilter" onchange="searchBooks()"><option value="All">All Access</option><option value="Open">Open Access</option><option value="Institutional">Institutional</option></select>
+  </div>
+  <div class="grid" id="bookGrid"></div>
+</section>
+
+
+<section class="section" id="features">
+  <div class="head"><div><h2>🚀 LibraX V3 Features</h2><span class="muted">More useful tools for students, teachers and administrators</span></div></div>
+  <div class="feature-grid">
+    <div class="feature card"><div class="fi">📌</div><h3>Bookmarks & Notes</h3><p>Save important resources, create reading notes and keep your study material organized.</p></div>
+    <div class="feature card"><div class="fi">🎯</div><h3>Reading Goals</h3><p>Track your reading sessions and set a personal weekly study target.</p></div>
+    <div class="feature card"><div class="fi">📊</div><h3>Student Analytics</h3><p>See saved resources, completed reading, recent activity and study progress.</p></div>
+    <div class="feature card"><div class="fi">📦</div><h3>Backup & Restore</h3><p>Export your local library data and import a previous backup on another device.</p></div>
+    <div class="feature card"><div class="fi">🔎</div><h3>Power Search</h3><p>Search by title, author, subject, department, language and access type.</p></div>
+    <div class="feature card"><div class="fi">♿</div><h3>Accessibility</h3><p>Reader font controls, text-to-speech, keyboard shortcuts and responsive layouts.</p></div>
+    <div class="feature card"><div class="fi">📱</div><h3>App Ready</h3><p>Installable PWA support can turn this browser project into a phone-like app experience.</p></div>
+    <div class="feature card"><div class="fi">🛡️</div><h3>Demo Security</h3><p>Role-based UI and local storage are included for demonstration; production needs a backend.</p></div>
+  </div>
+</section>
+
+<footer><h3>LibraX International Digital Library</h3><p style="margin-top:8px">Learn · Read · Research · Collaborate</p><p style="margin-top:12px">© 2026 LibraX · Demo architecture for college projects</p></footer>
+
+<button class="ai" onclick="toggleAI()">🤖</button>
+<div class="aip" id="aiPanel"><div class="aihead"><b>LibraX AI Study Assistant</b><div style="font-size:12px;opacity:.8">Smart local search assistant</div></div><div class="aibody"><div id="aiAnswer">Ask me about subjects, departments, books, saved items or your reading activity.</div><div class="airow"><input id="aiInput" placeholder="Ask something..." onkeydown="if(event.key==='Enter')askAI()"><button class="btn" onclick="askAI()">➤</button></div></div></div>
+
+<!-- Reader -->
+<div class="modal" id="readerModal"><div class="box">
+<button class="close" onclick="closeModal('readerModal')">×</button><h2 id="readerTitle"></h2><p class="muted" id="readerMeta" style="margin-top:6px"></p>
+<div class="progress"><i id="readerProgress" style="width:0%"></i></div>
+<div class="reader-top"><div><h3>📖 Online Reader</h3><span class="badge-live"><i></i> Local reading mode</span></div><div class="reader-controls"><button class="reader-font" onclick="changeReaderFont(-1)">A−</button><button class="reader-font" onclick="changeReaderFont(1)">A+</button><button class="reader-font" onclick="toggleBookmark()">🔖 Bookmark</button></div></div><div class="reader"><p id="readerText" style="margin-top:14px"></p></div>
+<div class="reader-tools"><button class="btn" onclick="increaseProgress(10)">▶ Continue +10%</button><button class="btn ghost" onclick="addNote()">📝 Add Note</button><button class="btn ghost" onclick="speakReader()">🔊 Read Aloud</button><button class="btn ok" onclick="downloadBook()">⬇️ Download Demo</button></div>
+<div id="notesArea" style="margin-top:15px"></div><div id="ratingArea" style="margin-top:15px"></div>
+</div></div>
+
+<!-- Auth -->
+<div class="modal" id="loginModal"><div class="box"><button class="close" onclick="closeModal('loginModal')">×</button><h2>🔐 Secure Demo Login</h2><p class="muted" style="margin:8px 0 20px">Use local demo authentication. Production should use OAuth/OIDC and a real backend.</p>
+<div class="form"><label>Email</label><input id="loginEmail" type="email" placeholder="you@example.com"></div><div class="form"><label>Password</label><input id="loginPassword" type="password" placeholder="Password"></div>
+<button class="btn full" onclick="login()">Login</button><button class="btn alt full" style="margin-top:9px" onclick="switchSignup()">Create Account</button><p class="muted" style="font-size:12px;margin-top:16px">Admin demo: admin@librax.com / admin123</p></div></div>
+
+<div class="modal" id="signupModal"><div class="box"><button class="close" onclick="closeModal('signupModal')">×</button><h2>✨ Create Account</h2><div class="form"><label>Full Name</label><input id="signupName" placeholder="Your name"></div><div class="form"><label>Email</label><input id="signupEmail" type="email" placeholder="you@example.com"></div><div class="form"><label>Password</label><input id="signupPassword" type="password" placeholder="Create password"></div><button class="btn full" onclick="signup()">Create Account</button></div></div>
+
+
+<div class="modal" id="studentModal"><div class="box">
+<button class="close" onclick="closeModal('studentModal')">×</button>
+<h2>🎓 My Study Dashboard</h2>
+<div id="studentDashboardContent" style="margin-top:18px"></div>
+</div></div>
+
+<!-- Profile -->
+<div class="modal" id="profileModal"><div class="box"><button class="close" onclick="closeModal('profileModal')">×</button><h2>👤 My Profile</h2><div id="profileContent" style="margin-top:18px"></div></div></div>
+
+<!-- Book detail -->
+<div class="modal" id="detailModal"><div class="box"><button class="close" onclick="closeModal('detailModal')">×</button><div id="detailContent"></div></div></div>
+
+<!-- Add/edit -->
+<div class="modal" id="bookModal"><div class="box"><button class="close" onclick="closeModal('bookModal')">×</button><h2 id="bookModalTitle">➕ Add Resource</h2>
+<div class="form"><label>Title</label><input id="newTitle"></div><div class="form"><label>Author</label><input id="newAuthor"></div>
+<div class="form"><label>Department</label><select id="newDepartment"></select></div><div class="form"><label>Category</label><select id="newCategory"></select></div>
+<div class="form"><label>Language</label><select id="newLanguage"><option>English</option><option>Hindi</option><option>Tamil</option><option>Malayalam</option></select></div>
+<div class="form"><label>Level</label><select id="newLevel"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></div>
+<div class="form"><label>Access</label><select id="newAccess"><option>Open</option><option>Institutional</option></select></div>
+<div class="form"><label>Description</label><textarea id="newDescription"></textarea></div>
+<button class="btn full" onclick="saveBook()">Save Resource</button></div></div>
+
+<!-- Admin -->
+<div class="dashboard" id="adminDashboard"><div class="dashnav"><h2>🛠️ LibraX Admin Center</h2><div><button class="btn" onclick="openAdminBook()">➕ Add</button> <button class="btn ghost" onclick="exportData()">⬇ Backup</button> <button class="btn ghost" onclick="exportCSV()">📊 CSV</button> <button class="btn ghost" onclick="document.getElementById('restoreFile').click()">♻ Restore</button> <button class="btn danger" onclick="closeAdmin()">Exit</button></div></div>
+<input id="restoreFile" type="file" accept=".json,application/json" style="display:none" onchange="importBackup(this.files[0])"><div class="dashbody"><h1>Institution Administration</h1><p class="muted">Catalog, user, usage and data-management controls.</p>
+<div class="dashgrid"><div class="dashcard card"><strong id="adminBooks">0</strong>Resources</div><div class="dashcard card"><strong id="adminUsers">0</strong>Users</div><div class="dashcard card"><strong id="adminSaved">0</strong>Saved</div><div class="dashcard card"><strong id="adminReads">0</strong>Reads</div></div>
+<div class="card" style="padding:18px;margin-bottom:20px"><h3>📈 Platform Analytics</h3><p id="analyticsText" class="muted" style="margin-top:8px"></p></div>
+<div class="card" style="padding:18px;overflow:auto"><h3>📚 Resource Management</h3><table style="margin-top:12px"><thead><tr><th>Title</th><th>Department</th><th>Language</th><th>Access</th><th>Action</th></tr></thead><tbody id="adminTable"></tbody></table></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const departments=["Computer Science","Information Technology","Electronics & Communication","Electrical Engineering","Mechanical Engineering","Civil Engineering","Artificial Intelligence","Data Science","BCA","BBA","Commerce","Mathematics","Physics","Chemistry","English","Education","Management","Biotechnology"];
+const categories=["Programming","Science","Mathematics","Engineering","Business","History","Education","Computer Science","Electronics","Management"];
+const subjects=["Python","JavaScript","C Programming","C++","Java","HTML & CSS","Data Structures","Algorithms","Database","Networking","AI","Machine Learning","Physics","Chemistry","Mathematics","Business","Accounting","Management","English"];
+const icons=["📘","📗","📙","📕","📓","📔","📚","📖"];
+const baseBooks=[
+["Python Programming","Computer Science","Programming"],["JavaScript Fundamentals","Computer Science","Programming"],["C Programming Complete Guide","Computer Science","Programming"],["Data Structures & Algorithms","Computer Science","Programming"],["Database Management Systems","Computer Science","Computer Science"],["Computer Networks","Computer Science","Computer Science"],["Artificial Intelligence","Artificial Intelligence","Programming"],["Machine Learning Basics","Data Science","Programming"],["Web Development Mastery","Information Technology","Programming"],["Digital Electronics","Electronics & Communication","Electronics"],["Microprocessors","Electronics & Communication","Engineering"],["Power Systems","Electrical Engineering","Engineering"],["Electrical Machines","Electrical Engineering","Engineering"],["Thermodynamics","Mechanical Engineering","Engineering"],["Engineering Mechanics","Mechanical Engineering","Engineering"],["Fluid Mechanics","Mechanical Engineering","Engineering"],["Structural Engineering","Civil Engineering","Engineering"],["Surveying","Civil Engineering","Engineering"],["Engineering Mathematics","Mathematics","Mathematics"],["Advanced Mathematics","Mathematics","Mathematics"],["Modern Physics","Physics","Science"],["Organic Chemistry","Chemistry","Science"],["Business Management","Management","Business"],["Financial Accounting","Commerce","Business"],["Marketing Management","BBA","Business"],["Digital Education","Education","Education"],["English Communication","English","Education"]
+];
+
+let seed=[];
+baseBooks.forEach((b,i)=>{for(let n=1;n<=20;n++)seed.push({
+ id:i*100+n,title:n===1?b[0]:`${b[0]} — Volume ${n}`,author:`${b[1]} Department`,
+ department:b[1],category:b[2],subject:subjects[(i+n)%subjects.length],icon:icons[(i+n)%icons.length],
+ description:`Comprehensive academic resource for ${b[0]}, designed for college learning, revision, assignments and research.`,
+ language:["English","Hindi","Tamil","Malayalam"][(i+n)%4],level:["Beginner","Intermediate","Advanced"][(i+n)%3],
+ access:n%5===0?"Institutional":"Open",popular:Math.floor(Math.random()*100),created:Date.now()-n*86400000
+})});
+let books=JSON.parse(localStorage.getItem("libraxBooksV2"))||seed;
+let users=JSON.parse(localStorage.getItem("libraxUsersV2"))||[{name:"Administrator",email:"admin@librax.com",password:"admin123",role:"admin"}];
+let currentUser=JSON.parse(localStorage.getItem("libraxUserV2"))||null;
+let saved=JSON.parse(localStorage.getItem("libraxSavedV2"))||[];
+let history=JSON.parse(localStorage.getItem("libraxHistoryV2"))||[];
+let progress=JSON.parse(localStorage.getItem("libraxProgressV2"))||{};
+let notes=JSON.parse(localStorage.getItem("libraxNotesV2"))||{};
+let ratings=JSON.parse(localStorage.getItem("libraxRatingsV3"))||{};
+let bookmarks=JSON.parse(localStorage.getItem("libraxBookmarksV3"))||[];
+let readingGoal=Number(localStorage.getItem("libraxReadingGoalV3"))||5;
+let readerFont=Number(localStorage.getItem("libraxReaderFontV3"))||16;
+let page=1, pageSize=24;
+let activeCategory="All",activeDepartment="All",currentBook=null,editingId=null,toastTimer;
+const saveAll=()=>{localStorage.setItem("libraxBooksV2",JSON.stringify(books));localStorage.setItem("libraxUsersV2",JSON.stringify(users));localStorage.setItem("libraxSavedV2",JSON.stringify(saved));localStorage.setItem("libraxHistoryV2",JSON.stringify(history));localStorage.setItem("libraxProgressV2",JSON.stringify(progress));localStorage.setItem("libraxNotesV2",JSON.stringify(notes));localStorage.setItem("libraxRatingsV3",JSON.stringify(ratings));
+localStorage.setItem("libraxBookmarksV3",JSON.stringify(bookmarks));localStorage.setItem("libraxReadingGoalV3",readingGoal);localStorage.setItem("libraxReaderFontV3",readerFont)};
+
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function renderDepartments(){departmentGrid.innerHTML=departments.map((d,i)=>`<div class="dept card" onclick="selectDepartment('${esc(d)}')"><div class="emoji">${icons[i%icons.length]}</div><b>${esc(d)}</b></div>`).join("")}
+function renderFilters(){categoryFilters.innerHTML=["All",...categories].map(c=>`<button class="filter ${activeCategory===c?"active":""}" onclick="selectCategory('${esc(c)}')">${esc(c)}</button>`).join("")}
+function searchBooks(){
+ const q=searchInput.value.toLowerCase().trim(),level=levelFilter.value,lang=languageFilter.value,access=availabilityFilter.value,sort=sortFilter.value;
+ let list=books.filter(b=>{
+  const hit=!q||[b.title,b.author,b.department,b.category,b.subject,b.language].some(x=>String(x).toLowerCase().includes(q));
+  return hit&&(activeCategory==="All"||b.category===activeCategory)&&(activeDepartment==="All"||b.department===activeDepartment)&&(level==="All"||b.level===level)&&(lang==="All"||b.language===lang)&&(access==="All"||b.access===access)
+ });
+ if(q) list.sort((a,b)=>{
+   const score=x=>(String(x.title).toLowerCase().includes(q)?5:0)+(String(x.subject).toLowerCase().includes(q)?3:0)+(String(x.department).toLowerCase().includes(q)?2:0);
+   return score(b)-score(a);
+ });
+ if(sort==="az")list.sort((a,b)=>a.title.localeCompare(b.title));
+ if(sort==="za")list.sort((a,b)=>b.title.localeCompare(a.title));
+ if(sort==="new")list.sort((a,b)=>b.created-a.created);
+ if(sort==="popular")list.sort((a,b)=>b.popular-a.popular);
+ page=1; renderBooks(list)
+}
+function renderBooks(list){
+ document.querySelectorAll(".pagination").forEach(x=>x.remove());
+ const totalPages=Math.max(1,Math.ceil(list.length/pageSize)); page=Math.min(page,totalPages);
+ const start=(page-1)*pageSize, visible=list.slice(start,start+pageSize);
+ bookGrid.innerHTML=visible.length?visible.map(b=>{
+   const p=progress[b.id]||0,sv=saved.includes(b.id),bm=bookmarks.includes(b.id),rt=ratings[b.id]||0;
+   return `<article class="book card"><div class="cover"><span class="level">${esc(b.level)}</span>
+   <button class="save ${bm?"bookmark":""}" title="${bm?"Bookmarked":"Bookmark"}" onclick="toggleBookmarkFor(${b.id})">${bm?"🔖":"♡"}</button>
+   <div class="emoji">${b.icon||"📚"}</div><b>${esc(b.title)}</b><small>${esc(b.department)}</small></div>
+   <div class="body"><h3>${esc(b.title)}</h3><p>${esc(b.author)}<br>${esc(b.subject)} · ${esc(b.language)}</p>
+   <div class="tags"><span class="tag">${esc(b.category)}</span><span class="tag">${esc(b.access)}</span></div>
+   <div class="rating" aria-label="Rating">${[1,2,3,4,5].map(n=>`<button class="${rt>=n?"on":""}" onclick="rateBook(${b.id},${n})">★</button>`).join("")}</div>
+   <div class="progress"><i style="width:${p}%"></i></div><small class="muted">${p}% completed</small>
+   <div class="actions" style="margin-top:9px"><button onclick="openReader(${b.id})">📖 Read</button><button class="ghost" onclick="openDetails(${b.id})">⋯</button></div>
+   </div></article>`
+ }).join(""):`<div class="empty"><div style="font-size:55px">📚</div><h2>No resources found</h2><p class="muted">Try another keyword, department or filter.</p></div>`;
+ resultCount.innerHTML=`${list.length.toLocaleString()} resources found <span class="search-meta">Page ${page} of ${totalPages}</span>`;
+ const pager=document.createElement("div"); pager.className="pagination";
+ if(totalPages>1){
+   pager.innerHTML=`<button class="btn ghost" onclick="changePage(${page-1})" ${page===1?"disabled":""}>←</button>
+   ${Array.from({length:Math.min(totalPages,7)},(_,i)=>{let n=i+1;return `<button class="btn ${n===page?"":"ghost"}" onclick="changePage(${n})">${n}</button>`}).join("")}
+   <button class="btn ghost" onclick="changePage(${page+1})" ${page===totalPages?"disabled":""}>→</button>`;
+ }
+ bookGrid.parentElement.appendChild(pager);
+ updateStats()
+}
+function changePage(n){page=Math.max(1,n);searchBooks();go("books")}
+function rateBook(id,n){ratings[id]=n;saveAll();searchBooks();toast(`⭐ Rated ${n}/5`)}
+function toggleBookmarkFor(id){bookmarks=bookmarks.includes(id)?bookmarks.filter(x=>x!==id):[...bookmarks,id];saveAll();searchBooks();toast(bookmarks.includes(id)?"🔖 Bookmark saved":"Bookmark removed")}
+function toggleBookmark(){if(!currentBook)return;toggleBookmarkFor(currentBook.id);renderNotes()}
+function changeReaderFont(n){readerFont=Math.max(12,Math.min(26,readerFont+n));readerText.style.fontSize=readerFont+"px";saveAll();toast(`Reader font: ${readerFont}px`)}
+function showBookmarks(){const list=books.filter(b=>bookmarks.includes(b.id));renderBooks(list);go("books");toast(`🔖 ${bookmarks.length} bookmarked resources`)}
+function openStudentDashboard(){
+ if(!currentUser){openLogin();return}
+ const completed=Object.values(progress).filter(v=>v>=100).length;
+ const reading=Object.values(progress).reduce((a,b)=>a+b,0);
+ const goalPct=Math.min(100,Math.round((history.length/readingGoal)*100));
+ studentDashboardContent.innerHTML=`<div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+ <div class="progress-ring" style="--ring:${goalPct}%"><span>${goalPct}%</span></div>
+ <div><h3>${esc(currentUser.name)}</h3><p class="muted">${esc(currentUser.email)}</p><p style="margin-top:7px">Weekly goal: <b>${history.length}/${readingGoal}</b> reading sessions</p></div></div>
+ <div class="goalbar"><i style="width:${goalPct}%"></i></div>
+ <div class="stats" style="grid-template-columns:repeat(2,1fr);margin-top:15px">
+ <div class="stat"><strong>${saved.length}</strong><span>Saved</span></div>
+ <div class="stat"><strong>${bookmarks.length}</strong><span>Bookmarks</span></div>
+ <div class="stat"><strong>${completed}</strong><span>Completed</span></div>
+ <div class="stat"><strong>${Math.round(reading)}</strong><span>Progress Points</span></div></div>
+ <div class="admin-tools"><button class="btn" onclick="showSaved();closeModal('studentModal')">❤️ My Library</button>
+ <button class="btn alt" onclick="showBookmarks();closeModal('studentModal')">🔖 Bookmarks</button>
+ <button class="btn ghost" onclick="setGoal()">🎯 Set Goal</button></div>
+ <h3 style="margin-top:20px">🕘 Recent activity</h3>
+ <div style="margin-top:8px">${history.slice(0,6).map(id=>{const b=books.find(x=>x.id===id);return b?`<div class="card" style="padding:10px;margin-top:7px;display:flex;justify-content:space-between;gap:8px"><span>${esc(b.title)}</span><button class="btn ghost" onclick="closeModal('studentModal');openReader(${b.id})">Read</button></div>`:""}).join("")||'<p class="muted">No reading activity yet.</p>'}</div>`;
+ studentModal.classList.add("show")
+}
+function setGoal(){const n=Number(prompt("Weekly reading session goal:",readingGoal));if(!n||n<1||n>100)return;readingGoal=n;saveAll();openStudentDashboard();toast("🎯 Reading goal updated")}
+function installApp(){
+ if("serviceWorker" in navigator){
+   const sw=`self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>self.clients.claim());self.addEventListener('fetch',e=>{});`;
+   const blob=new Blob([sw],{type:"text/javascript"});const url=URL.createObjectURL(blob);
+   navigator.serviceWorker.register(url).then(()=>toast("📱 App mode enabled for this browser")).catch(()=>toast("Install mode is not available here"));
+ } else toast("Your browser does not support PWA installation")
+}
+function exportCSV(){
+ const rows=[["ID","Title","Author","Department","Category","Language","Level","Access"],...books.map(b=>[b.id,b.title,b.author,b.department,b.category,b.language,b.level,b.access])];
+ const csv=rows.map(r=>r.map(x=>`"${String(x).replaceAll('"','""')}"`).join(",")).join("\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="librax-catalog.csv";a.click();toast("📊 Catalog CSV exported")
+}
+function importBackup(file){
+ if(!file)return;const reader=new FileReader();reader.onload=()=>{
+  try{const d=JSON.parse(reader.result);if(d.books)books=d.books;if(d.users)users=d.users;if(d.saved)saved=d.saved;if(d.history)history=d.history;if(d.progress)progress=d.progress;if(d.notes)notes=d.notes;if(d.ratings)ratings=d.ratings;if(d.bookmarks)bookmarks=d.bookmarks;saveAll();renderDepartments();renderFilters();renderBooks(books);updateAdmin();toast("♻️ Backup restored")}catch(e){toast("❌ Invalid backup file")}
+ };reader.readAsText(file)
+}
+
+function selectCategory(c){activeCategory=c;activeDepartment="All";renderFilters();searchBooks();go("books")}
+function selectDepartment(d){activeDepartment=d;activeCategory="All";renderFilters();searchBooks();go("books")}
+function resetFilters(){activeCategory="All";activeDepartment="All";searchInput.value="";levelFilter.value=languageFilter.value=availabilityFilter.value="All";sortFilter.value="relevance";renderFilters();searchBooks()}
+function toggleAdvanced(){advanced.classList.toggle("show")}
+function toggleSave(id){if(!currentUser){openLogin();return}saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];saveAll();searchBooks();toast(saved.includes(id)?"❤️ Saved to My Library":"Removed from My Library")}
+function showSaved(){renderBooks(books.filter(b=>saved.includes(b.id)));go("books");toast(`❤️ ${saved.length} saved resources`)}
+function showHistory(){renderBooks(history.map(id=>books.find(b=>b.id===id)).filter(Boolean));go("books");toast(`🕘 ${history.length} recently opened`)}
+function openDetails(id){const b=books.find(x=>x.id===id);if(!b)return;detailContent.innerHTML=`<div style="font-size:50px">${b.icon||"📚"}</div><h2 style="margin-top:8px">${esc(b.title)}</h2><p class="muted" style="margin-top:7px">${esc(b.author)} · ${esc(b.department)}</p><div class="tags" style="margin-top:14px"><span class="tag">${esc(b.category)}</span><span class="tag">${esc(b.level)}</span><span class="tag">${esc(b.language)}</span><span class="tag">${esc(b.access)}</span></div><p style="line-height:1.8;margin:18px 0">${esc(b.description)}</p><button class="btn full" onclick="closeModal('detailModal');openReader(${b.id})">📖 Open Reader</button>`;detailModal.classList.add("show")}
+function openReader(id){currentBook=books.find(b=>b.id===id);if(!currentBook)return;history=[id,...history.filter(x=>x!==id)].slice(0,30);progress[id]=progress[id]||0;saveAll();readerTitle.textContent=currentBook.title;readerMeta.textContent=`${currentBook.author} · ${currentBook.department} · ${currentBook.category} · ${currentBook.language}`;readerText.textContent=`${currentBook.description}\n\nChapter 1 — Introduction\n\nThis international-library preview presents the major concepts related to ${currentBook.title}.\n\nChapter 2 — Core Concepts\n\nUse this resource for learning, revision, assignments and examination preparation.\n\nChapter 3 — Research & Practice\n\nConnect this material with related resources, notes and your department curriculum.\n\nNote: This single-file demo does not contain copyrighted full books. Connect licensed documents through secure cloud storage in production.`;updateReader();renderNotes();readerModal.classList.add("show");updateStats()}
+function updateReader(){readerProgress.style.width=(progress[currentBook?.id]||0)+"%"}
+function increaseProgress(n){if(!currentBook)return;progress[currentBook.id]=Math.min(100,(progress[currentBook.id]||0)+n);saveAll();updateReader();updateStats();toast(`Reading progress: ${progress[currentBook.id]}%`)}
+function addNote(){if(!currentBook)return;const n=prompt("Write a note for this resource:");if(!n)return;(notes[currentBook.id]??=[]).push({text:n,date:new Date().toLocaleString()});saveAll();renderNotes();toast("📝 Note saved")}
+function renderNotes(){const ns=notes[currentBook?.id]||[];notesArea.innerHTML=ns.length?`<h3>📝 My Notes</h3>`+ns.map(n=>`<div class="card" style="padding:12px;margin-top:8px"><b>${esc(n.text)}</b><small class="muted" style="display:block;margin-top:5px">${esc(n.date)}</small></div>`).join(""):""}
+function speakReader(){if(!("speechSynthesis"in window)){toast("Speech is not supported");return}speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(readerText.textContent))}
+function downloadBook(){if(!currentBook)return;const text=`LIBRAX DIGITAL LIBRARY\n\n${currentBook.title}\n${currentBook.author}\n${currentBook.department}\n${currentBook.description}\n\nDemo document — replace with licensed content in production.`;const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"text/plain"}));a.download=currentBook.title.replace(/[^a-z0-9]/gi,"_")+".txt";a.click();toast("⬇️ Demo document downloaded")}
+function openLogin(){loginModal.classList.add("show")}
+function login(){const e=loginEmail.value.trim().toLowerCase(),p=loginPassword.value,u=users.find(x=>x.email===e&&x.password===p);if(!u){toast("❌ Invalid credentials");return}currentUser=u;localStorage.setItem("libraxUserV2",JSON.stringify(u));closeModal("loginModal");updateAuth();toast(`Welcome ${u.name} 👋`);if(u.role==="admin")openAdmin()}
+function switchSignup(){closeModal("loginModal");signupModal.classList.add("show")}
+function signup(){const name=signupName.value.trim(),email=signupEmail.value.trim().toLowerCase(),password=signupPassword.value;if(!name||!email||password.length<6){toast("Enter all fields; password must be 6+ characters");return}if(users.some(x=>x.email===email)){toast("Account already exists");return}currentUser={name,email,password,role:"user"};users.push(currentUser);saveAll();localStorage.setItem("libraxUserV2",JSON.stringify(currentUser));closeModal("signupModal");updateAuth();toast("🎉 Account created")}
+function updateAuth(){authBtn.textContent=currentUser?"Account":"Login"}
+function logout(){currentUser=null;localStorage.removeItem("libraxUserV2");closeModal("profileModal");updateAuth();toast("Logged out")}
+function openProfile(){if(!currentUser){openLogin();return}profileContent.innerHTML=`<div style="text-align:center"><div style="font-size:65px">👤</div><h2>${esc(currentUser.name)}</h2><p class="muted">${esc(currentUser.email)}</p><p style="margin:14px 0">Role: <b>${esc(currentUser.role)}</b></p><div class="stats" style="grid-template-columns:1fr 1fr"><div class="stat"><strong>${saved.length}</strong><span>Saved</span></div><div class="stat"><strong>${history.length}</strong><span>History</span></div></div><button class="btn full" style="margin-top:15px" onclick="showSaved();closeModal('profileModal')">❤️ My Library</button><button class="btn alt full" style="margin-top:8px" onclick="closeModal('profileModal');openStudentDashboard()">🎓 Study Dashboard</button><button class="btn ghost full" style="margin-top:8px" onclick="showBookmarks();closeModal('profileModal')">🔖 Bookmarks</button>${currentUser.role==="admin"?`<button class="btn alt full" style="margin-top:8px" onclick="closeModal('profileModal');openAdmin()">🛠️ Admin Center</button>`:""}<button class="btn danger full" style="margin-top:8px" onclick="logout()">Logout</button></div>`;profileModal.classList.add("show")}
+function openAdmin(){if(!currentUser||currentUser.role!=="admin"){toast("Admin access required");return}adminDashboard.classList.add("show");updateAdmin()}
+function closeAdmin(){adminDashboard.classList.remove("show")}
+function populateSelects(){newDepartment.innerHTML=departments.map(x=>`<option>${esc(x)}</option>`).join("");newCategory.innerHTML=categories.map(x=>`<option>${esc(x)}</option>`).join("")}
+function openAdminBook(id=null){editingId=id;populateSelects();bookModalTitle.textContent=id?"✏️ Edit Resource":"➕ Add Resource";const b=id?books.find(x=>x.id===id):null;newTitle.value=b?.title||"";newAuthor.value=b?.author||"";newDepartment.value=b?.department||departments[0];newCategory.value=b?.category||categories[0];newLanguage.value=b?.language||"English";newLevel.value=b?.level||"Beginner";newAccess.value=b?.access||"Open";newDescription.value=b?.description||"";bookModal.classList.add("show")}
+function saveBook(){const data={title:newTitle.value.trim(),author:newAuthor.value.trim(),department:newDepartment.value,category:newCategory.value,language:newLanguage.value,level:newLevel.value,access:newAccess.value,description:newDescription.value.trim()};if(!data.title||!data.author||!data.description){toast("Complete all fields");return}if(editingId){Object.assign(books.find(x=>x.id===editingId),data);toast("Resource updated")}else{books.unshift({id:Date.now(),...data,subject:"General",icon:"📚",popular:0,created:Date.now()});toast("📚 Resource added")}saveAll();closeModal("bookModal");renderBooks(books);updateAdmin()}
+function deleteBook(id){if(!confirm("Delete this resource?"))return;books=books.filter(x=>x.id!==id);saved=saved.filter(x=>x!==id);saveAll();renderBooks(books);updateAdmin();toast("Resource deleted")}
+function updateAdmin(){adminBooks.textContent=books.length;adminUsers.textContent=users.length;adminSaved.textContent=saved.length;adminReads.textContent=history.length;analyticsText.textContent=`Most saved: ${books.filter(b=>saved.includes(b.id)).slice(0,3).map(b=>b.title).join(", ")||"No saved resources yet"}. Active catalog spans ${new Set(books.map(b=>b.department)).size} departments and ${new Set(books.map(b=>b.language)).size} languages. ${bookmarks.length} bookmarks are currently tracked in this browser.`;adminTable.innerHTML=books.slice(0,120).map(b=>`<tr><td>${esc(b.title)}</td><td>${esc(b.department)}</td><td>${esc(b.language)}</td><td>${esc(b.access)}</td><td><button class="btn ghost" onclick="openAdminBook(${b.id})">Edit</button> <button class="btn danger" onclick="deleteBook(${b.id})">Delete</button></td></tr>`).join("")}
+function exportData(){const blob=new Blob([JSON.stringify({books,users,saved,history,progress,notes},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="librax-backup.json";a.click();toast("⬇️ Backup exported")}
+function toggleAI(){aiPanel.classList.toggle("show")}
+function askAI(){const q=aiInput.value.trim().toLowerCase();if(!q)return;let a;if(q.includes("python"))a=`There are ${books.filter(b=>b.title.toLowerCase().includes("python")).length} Python resources. Try the Programming category.`;else if(q.includes("saved"))a=`You have ${saved.length} saved resources.`;else if(q.includes("history"))a=`Your recent reading history contains ${history.length} resources.`;else if(q.includes("department"))a=`LibraX currently covers ${departments.length} departments.`;else if(q.includes("how many"))a=`The catalog currently contains ${books.length.toLocaleString()} resources.`;else{const n=books.filter(b=>[b.title,b.subject,b.category,b.department].some(x=>String(x).toLowerCase().includes(q))).length;a=n?`I found ${n} matching resources.`:"No direct match. Try a title, subject, author or department."}aiAnswer.textContent=a;aiInput.value=""}
+function toggleTheme(){document.body.classList.toggle("dark");localStorage.setItem("libraxTheme",document.body.classList.contains("dark")?"dark":"light")}
+function toggleNotifications(){notif.classList.toggle("show")}
+function go(id){document.getElementById(id)?.scrollIntoView({behavior:"smooth"});navLinks.classList.remove("show")}
+function toggleMenu(){navLinks.classList.toggle("show")}
+function closeModal(id){document.getElementById(id).classList.remove("show")}
+function updateStats(){totalBooks.textContent=books.length.toLocaleString();totalSaved.textContent=saved.length;totalRead.textContent=history.length}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2400)}
+
+document.addEventListener("keydown",e=>{if(e.key==="/"&&document.activeElement.tagName!=="INPUT"){e.preventDefault();searchInput.focus()}if(e.key.toLowerCase()==="d"&&document.activeElement.tagName!=="INPUT")toggleTheme();if(e.key.toLowerCase()==="b"&&document.activeElement.tagName!=="INPUT")showBookmarks();if(e.key.toLowerCase()==="s"&&document.activeElement.tagName!=="INPUT")openStudentDashboard();if(e.key==="Escape"){document.querySelectorAll(".modal.show").forEach(m=>m.classList.remove("show"));notif.classList.remove("show")}});
+if(localStorage.getItem("libraxTheme")==="dark")document.body.classList.add("dark");readerText.style.fontSize=readerFont+"px";
+renderDepartments();renderFilters();renderBooks(books);updateAuth();updateStats();
+</script>
+</body>
+</html>
